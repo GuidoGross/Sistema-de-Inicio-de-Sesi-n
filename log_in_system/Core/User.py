@@ -1,4 +1,5 @@
 class User():
+    
     def __init__(self, name, id_number, age, phone_number, email, domicile, role = None, account = None):
         self.name = name
         self.id_number = id_number

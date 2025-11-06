@@ -1,4 +1,5 @@
 class Accounts():
+    
     accounts = []
 
     @classmethod
@@ -6,7 +7,7 @@ class Accounts():
         if not account.username in [account.username for account in cls.accounts]:
             cls.accounts.append(account)
             return True
-        else: return False
+        return False
     
     @classmethod
     def delete(cls, account):

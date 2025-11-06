@@ -18,7 +18,7 @@ class Utilities:
         for field in normal_fields:
             widget = None
             if field["type"] == "label":
-                widget = gui_utilities.create_label(text = field.get("text", ""), background_color = "#333333")
+                widget = gui_utilities.create_label(text = field.get("text", ""), background_color = "#333333", font_weight = field.get("font_weight"))
                 fields_layout.addWidget(widget, alignment = Qt.AlignmentFlag.AlignLeft)
             elif field["type"] == "text_box":
                 widget = gui_utilities.create_text_box(placeholder_text = field.get("placeholder", ""), hide_text = field.get("hide_text", False))
@@ -59,7 +59,7 @@ class Utilities:
                     widget = gui_utilities.create_text_box(placeholder_text = field.get("placeholder", ""), hide_text = field.get("hide_text", False))
                 elif field["type"] == "combo_box":
                     widget = gui_utilities.create_combo_box(placeholder_text = field.get("placeholder", ""), items = field.get("items", []))
-                elif field["type"] == "check_box": widget = gui_utilities.create_checkbox(text = field.get("text", ""), background_color = "#333333")
+                elif field["type"] == "check_box": widget = gui_utilities.create_checkbox(text = field.get("text", ""), background_color = "#333333", padding_left = 20)
                 if widget:
                     grid_layout.addWidget(widget, row, column)
                     inputs.append(widget)
@@ -80,7 +80,7 @@ class Utilities:
         cancel_button = gui_utilities.create_button(text = "Cancelar")
         buttons_layout.addWidget(cancel_button)
         cancel_button.clicked.connect(cancel_button_callback)
-        return main_layout
+        return main_layout, inputs
     
     @staticmethod
     def create_delete_and_edit_form(
@@ -111,13 +111,15 @@ class Utilities:
         main_layout.addWidget(table)
         if filter_enabled:
         
-            def filter_table():
+            def search():
                 search_text = search_bar.text().lower()
                 for i in range(table.rowCount()):
                     item = table.item(i, 0)
-                    if item: table.setRowHidden(i, search_text not in item.text().lower())
+                    if item:
+                        item_text = item.text().lower()
+                        table.setRowHidden(i, not any(word.startswith(search_text) for word in item_text.split()))
             
-            search_bar.textChanged.connect(filter_table)
+            search_bar.textChanged.connect(search)
         buttons_layout = QHBoxLayout()
         main_layout.addLayout(buttons_layout)
         buttons_layout.setSpacing(10)

@@ -1,6 +1,7 @@
 from Core.Role import Role
 
 class Roles:
+    
     roles = [
         Role("Personal", ["Lectura"]),
         Role("Jefe de área", ["Lectura", "Edición"]),
@@ -21,6 +22,5 @@ class Roles:
     @classmethod
     def get_role_by_name(cls, name):
         for role in cls.roles:
-            if role.name == name:
-                return role
+            if role.name == name: return role
         return None
